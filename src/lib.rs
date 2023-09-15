@@ -15,6 +15,11 @@ pub enum Error {
 
 /// Takes a UF2 and returns raw bin coupled with family ID-target address pairs
 ///
+/// # Panics
+///
+/// - If slices can't be chunked into arrays of the right sizes
+/// - Current address wasn't set when it should have been
+///
 /// # Errors
 ///
 /// - [`Error::TooMuchPaddingRequired`]
