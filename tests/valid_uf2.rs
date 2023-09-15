@@ -25,7 +25,7 @@ fn test() {
         ),
         String::from_utf8(output.stdout).unwrap()
     );
-    let (converted, family_to_target) = uf2::convert_from_uf2(uf2).unwrap();
+    let (converted, family_to_target) = uf2_decode::convert_from_uf2(uf2).unwrap();
     assert_eq!(
         family_to_target,
         HashMap::from([(0xe48b_ff56, 0x1000_0000)])
