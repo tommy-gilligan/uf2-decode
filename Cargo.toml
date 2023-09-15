@@ -1,12 +1,12 @@
 [package]
 authors = ["Tommy Gilligan"]
-name = "uf2"
+name = "uf2-decode"
 version = "0.1.0"
 edition = "2021"
 description = "Basic decoding of UF2"
 license = "MIT"
-repository = "https://github.com/tommy-gilligan/uf2.git"
-homepage = "https://github.com/tommy-gilligan/uf2"
+repository = "https://github.com/tommy-gilligan/uf2-decode.git"
+homepage = "https://github.com/tommy-gilligan/uf2-decode"
 keywords = ["uf2", "bin"]
 categories = ["encoding"]
 readme = "README.md"
