@@ -1,4 +1,7 @@
-# UF2
+# uf2-decode
+
+[![uf2-decode on crates.io](https://img.shields.io/crates/d/uf2-decode)](https://crates.io/crates/uf2-decode)
+[![uf2-decode on docs.rs](https://img.shields.io/docsrs/uf2-decode)](https://docs.rs/uf2-decode/latest/uf2_decode/)
 
 Basic decoding of UF2.  This is a partial
 adaptation of
