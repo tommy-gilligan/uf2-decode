@@ -14,7 +14,12 @@ pub enum Error {
 }
 
 /// Takes a UF2 and returns raw bin coupled with family ID-target address pairs
-#[must_use]
+///
+/// # Errors
+///
+/// - [`Error::TooMuchPaddingRequired`]
+/// - [`Error::NonWordPaddingSize`]
+/// - [`Error::InvalidDataSize`]
 pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, usize>), Error> {
     let mut curr_addr: Option<usize> = None;
     let mut curr_family_id: Option<u32> = None;
@@ -33,7 +38,7 @@ pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, usize>), Er
         }
         let data_len = hd[4] as usize;
         if data_len > 476 {
-            return Err(Error::InvalidDataSize(index))
+            return Err(Error::InvalidDataSize(index));
         }
         let new_addr = hd[3] as usize;
         if (hd[2] & 0x2000) != 0 && curr_family_id.is_none() {
@@ -46,10 +51,10 @@ pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, usize>), Er
         }
         let mut padding = new_addr - curr_addr.unwrap();
         if padding > 10 * 1024 * 1024 {
-            return Err(Error::TooMuchPaddingRequired(index))
+            return Err(Error::TooMuchPaddingRequired(index));
         }
         if padding % 4 != 0 {
-            return Err(Error::NonWordPaddingSize(index))
+            return Err(Error::NonWordPaddingSize(index));
         }
         while padding > 0 {
             padding -= 4;
