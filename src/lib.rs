@@ -28,11 +28,12 @@ pub enum Error {
 /// - [`Error::TooMuchPaddingRequired`]
 /// - [`Error::NonWordPaddingSize`]
 /// - [`Error::InvalidDataSize`]
-pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, usize>), Error> {
+pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, u64>), Error> {
     let mut curr_addr: Option<usize> = None;
     let mut curr_family_id: Option<u32> = None;
-    let mut families_found: HashMap<u32, usize> = HashMap::new();
+    let mut families_found: HashMap<u32, u64> = HashMap::new();
     let mut outp: Vec<u8> = Vec::new();
+
     for (index, block) in buf.chunks_exact(512).enumerate() {
         let hd: [u32; 8] = block[0..32]
             .chunks_exact(4)
@@ -75,11 +76,11 @@ pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, usize>), Er
         curr_addr = Some(new_addr + data_len);
         if (hd[2] & 0x2000) != 0 {
             match families_found.get(&hd[7]) {
-                Some(v) if *v > new_addr => {
-                    families_found.insert(hd[7], new_addr);
+                Some(v) if *v > new_addr.try_into().unwrap() => {
+                    families_found.insert(hd[7], new_addr.try_into().unwrap());
                 }
                 None => {
-                    families_found.insert(hd[7], new_addr);
+                    families_found.insert(hd[7], new_addr.try_into().unwrap());
                 }
                 _ => (),
             }
