@@ -1,7 +1,7 @@
 [package]
 authors = ["Tommy Gilligan"]
 name = "uf2-decode"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Basic decoding of UF2"
 license = "MIT"
