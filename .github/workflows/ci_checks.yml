@@ -10,7 +10,7 @@ jobs:
     name: Linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
       - run: cargo clippy -- --deny clippy::nursery --deny clippy::pedantic --deny clippy::cargo --allow clippy::missing-panics-doc
@@ -18,15 +18,26 @@ jobs:
     name: Testing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - run: cargo test
+  fuzz:
+    name: Fuzzing
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/install@cargo-fuzz
+      - run: cargo fuzz run convert_from_uf2 -- -max_total_time=120
   formatting:
     name: Formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
       - run: cargo fmt -- --check

@@ -1,0 +1,27 @@
+[package]
+name = "uf2-decode-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.uf2-decode]
+path = ".."
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "convert_from_uf2"
+path = "fuzz_targets/convert_from_uf2.rs"
+test = false
+doc = false
