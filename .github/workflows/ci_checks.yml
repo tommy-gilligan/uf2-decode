@@ -32,7 +32,7 @@ jobs:
           submodules: true
       - uses: dtolnay/rust-toolchain@nightly
       - uses: dtolnay/install@cargo-fuzz
-      - run: cargo fuzz run convert_from_uf2 -- -timeout=120
+      - run: cargo fuzz run convert_from_uf2 -- -max_total_time=120
   formatting:
     name: Formatting
     runs-on: ubuntu-latest
