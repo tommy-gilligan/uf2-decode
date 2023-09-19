@@ -14,20 +14,17 @@ pub enum Error {
     TooMuchPaddingRequired(usize),
     NonWordPaddingSize(usize),
     InvalidDataSize(usize),
+    InvalidAddr(usize),
 }
 
 /// Takes a UF2 and returns raw bin coupled with family ID-target address pairs
-///
-/// # Panics
-///
-/// - If slices can't be chunked into arrays of the right sizes
-/// - Current address wasn't set when it should have been
 ///
 /// # Errors
 ///
 /// - [`Error::TooMuchPaddingRequired`]
 /// - [`Error::NonWordPaddingSize`]
 /// - [`Error::InvalidDataSize`]
+/// - [`Error::InvalidAddr`]
 pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, u64>), Error> {
     let mut curr_addr: Option<usize> = None;
     let mut curr_family_id: Option<u32> = None;
@@ -58,7 +55,9 @@ pub fn convert_from_uf2(buf: &[u8]) -> Result<(Vec<u8>, HashMap<u32, u64>), Erro
             curr_family_id = Some(hd[7]);
             curr_addr = Some(new_addr);
         }
-        let mut padding = new_addr - curr_addr.unwrap();
+        let mut padding = new_addr
+            .checked_sub(curr_addr.unwrap())
+            .ok_or(Error::InvalidAddr(new_addr))?;
         if padding > 10 * 1024 * 1024 {
             return Err(Error::TooMuchPaddingRequired(index));
         }
