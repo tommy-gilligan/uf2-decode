@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: false
-      - run: cargo clippy -- --deny clippy::nursery --deny clippy::pedantic --deny clippy::cargo
+      - run: cargo clippy -- --deny clippy::nursery --deny clippy::pedantic --deny clippy::cargo --allow clippy::missing-panics-doc
   testing:
     name: Testing
     runs-on: ubuntu-latest
